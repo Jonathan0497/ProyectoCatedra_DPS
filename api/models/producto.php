@@ -1,6 +1,6 @@
 <?php
 
-class Usuarios extends Validator
+class Producto extends Validator
 {
     // Declaración de atributos (propiedades).
     private $id_producto = null;
@@ -178,6 +178,22 @@ class Usuarios extends Validator
                 FROM producto 
                 WHERE id_producto = ?';
         $params = array($this->id_producto);
+        return Database::getRow($sql, $params);
+    }
+
+    public function readProductoMarca()
+    {
+        $sql = 'SELECT id_producto, nombre_producto, descripcion_producto, precio_producto, cantidad_disponible, id_categoria_producto, id_marca, id_estado_producto, id_usuario 
+        FROM producto WHERE id_marca = ?';
+        $params = array($this->id_marca);
+        return Database::getRow($sql, $params);
+    }
+
+    public function readProductoCategoria()
+    {
+        $sql = 'SELECT id_producto, nombre_producto, descripcion_producto, precio_producto, cantidad_disponible, id_categoria_producto, id_marca, id_estado_producto, id_usuario 
+        FROM producto WHERE id_categoria_producto = ?';
+        $params = array($this->id_categoria_producto);
         return Database::getRow($sql, $params);
     }
 
