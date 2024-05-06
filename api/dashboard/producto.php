@@ -41,8 +41,6 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Estado incorrecto';
                 } elseif (!$model->setUsuario($_SESSION['id_usuario'])) {
                     $result['exception'] = 'Usuario incorrecto';
-                } elseif (!is_uploaded_file($_FILES['imagen']['tmp_name'])) {
-                    $result['exception'] = 'Seleccione una imagen';
                 } elseif ($model->createRow()) {
                     $result['status'] = 1;
                     $result['message'] = 'Producto creado correctamente';
