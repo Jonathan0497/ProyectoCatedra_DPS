@@ -12,6 +12,7 @@ const ProductoList = () => {
   const [productos, setProductos] = useState([]);
   const [marcas, setMarcas] = useState([]);
   const [categorias, setCategorias] = useState([]);
+  const [estado, setEstado] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [producto, setProducto] = useState({
     id_producto: '',
@@ -23,7 +24,6 @@ const ProductoList = () => {
     id_categoria_producto: '',
     id_marca: '',
     id_estado_producto: '',
-    id_usuario: ''
   });
 
   useEffect(() => {
@@ -36,6 +36,16 @@ const ProductoList = () => {
     axios.get(API_URL + 'readAll')
       .then(response => {
         setProductos(response.data.dataset || []);
+      })
+      .catch(error => {
+        console.error('Error fetching productos:', error);
+      });
+  };
+
+  const fetchEstado = () => {
+    axios.get(API_URL + 'readAllEstado')
+      .then(response => {
+        setEstado(response.data.dataset || []);
       })
       .catch(error => {
         console.error('Error fetching productos:', error);
@@ -98,16 +108,16 @@ const ProductoList = () => {
     setModalVisible(true);
   };
 
-  const eliminarMarca = (id) => {
+  const eliminarProducto = (id) => {
     axios.post(API_URL + 'delete', {
       id: id
     })
       .then(response => {
         if (response.data.status === 1) {
-          alert('Marca eliminada correctamente');
+          alert('Producto eliminado correctamente');
           fetchMarcas();
         } else {
-          alert(response.data.exception || 'Error al eliminar la marca');
+          alert(response.data.exception || 'Error al eliminar el Producto');
         }
       })
       .catch(error => {
@@ -174,18 +184,16 @@ const ProductoList = () => {
                 <Picker.Item key={marca.id_marca} label={marca.nombre_marca} value={marca.id_marca} />
               ))}
             </Picker>
-            <TextInput
+            <Picker
+              selectedValue={producto.id_estado_producto}
               style={styles.input}
-              onChangeText={(text) => setProducto({ ...producto, id_estado_producto: text })}
-              value={producto.id_estado_producto}
-              placeholder="ID del estado"
-            />
-            <TextInput
-              style={styles.input}
-              onChangeText={(text) => setProducto({ ...producto, id_usuario: text })}
-              value={producto.id_usuario}
-              placeholder="ID del usuario"
-            />
+              onValueChange={(itemValue, itemIndex) =>
+                setProducto({ ...producto, id_estado_producto: itemValue })
+              }>
+              {estado.map((estado) => (
+                <Picker.Item key={estado.id_marca} label={estado.nombre_marca} value={estado.id_marca} />
+              ))}
+            </Picker>
             <View style={styles.buttonGroup}>
               <Button title="Guardar" onPress={handleSaveProducto} />
               <Button title="Cerrar" color="red" onPress={() => setModalVisible(false)} />

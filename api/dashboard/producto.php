@@ -31,6 +31,15 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'No hay datos registrados';
                 }
                 break;
+                case 'readAllEstado':
+                    if ($result['dataset'] = $model->readAll()) {
+                        $result['status'] = 1;
+                    } elseif (Database::getException()) {
+                        $result['exception'] = Database::getException();
+                    } else {
+                        $result['exception'] = 'No hay datos registrados';
+                    }
+                    break;
             case 'create':
                 $_POST = json_decode(file_get_contents("php://input"), true);
                 $_POST = $model->validateForm($_POST);

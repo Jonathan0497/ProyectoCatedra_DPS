@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import axios from 'axios';
 
 function HomeScreen({ navigation }) {
     const handleLogout = () => {
@@ -24,7 +25,7 @@ function HomeScreen({ navigation }) {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Bienvenido a la Aplicación</Text>
-        <TouchableOpacity onPress={(handleLogout) => navigation.navigate('Login')} style={styles.logoutButton}>
+        <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
           <Ionicons name="log-out-outline" size={24} color="white" />
         </TouchableOpacity>
       </View>
@@ -35,7 +36,9 @@ function HomeScreen({ navigation }) {
         <TouchableOpacity style={[styles.button, { backgroundColor: '#6A5ACD' }]} onPress={() => navigation.navigate('Product')}>
           <Text style={styles.buttonText}>Gestionar Productos</Text>
         </TouchableOpacity>
-        {}
+        <TouchableOpacity style={[styles.button, { backgroundColor: '#FF8C00' }]} onPress={() => navigation.navigate('Categoria')}>
+          <Text style={styles.buttonText}>Gestionar Categorías</Text>
+        </TouchableOpacity> {/* Añade este botón para navegar a la lista de categorías */}
       </View>
     </View>
   );

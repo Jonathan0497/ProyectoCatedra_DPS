@@ -227,6 +227,13 @@ class Usuarios extends Validator
         return Database::getRows($sql, $params);
     }
 
+    public function readAllEstado()
+    {
+        $sql = 'SELECT id_estado_producto, estado_producto FROM estado_producto';
+        $params = null;
+        return Database::getRows($sql, $params);
+    }
+
     public function readOne()
     {
         $sql = 'SELECT id_usuario, nombre_usuario, apellido_usuario, alias_usuario, correo_usuario, telefono, dui, id_estado_usuario
