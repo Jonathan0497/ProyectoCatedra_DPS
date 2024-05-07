@@ -41,6 +41,7 @@ if (isset($_GET['action'])) {
                 }
                 break;
             case 'editProfile':
+                $_POST = json_decode(file_get_contents("php://input"), true);
                 $_POST = $model->validateForm($_POST);
                 if (!$model->setNombre($_POST['nombre'])) {
                     $result['exception'] = 'Nombre incorrecto';
@@ -60,6 +61,7 @@ if (isset($_GET['action'])) {
                 }
                 break;
             case 'changePassword':
+                $_POST = json_decode(file_get_contents("php://input"), true);
                 $_POST = $usuario->validateForm($_POST);
                 if (!$usuario->setId($_SESSION['id_usuario'])) {
                     $result['exception'] = 'Usuario incorrecto';
@@ -84,6 +86,7 @@ if (isset($_GET['action'])) {
                 }
                 break;
             case 'create':
+                $_POST = json_decode(file_get_contents("php://input"), true);
                 $_POST = $model->validateForm($_POST);
                 if (!$model->setNombre($_POST['nombre'])) {
                     $result['exception'] = 'Nombre incorrecto';
@@ -118,6 +121,7 @@ if (isset($_GET['action'])) {
                 }
                 break;
             case 'update':
+                $_POST = json_decode(file_get_contents("php://input"), true);
                 $_POST = $model->validateForm($_POST);
                 if (!$model->setId($_POST['id'])) {
                     $result['exception'] = 'Usuario incorrecto';
@@ -143,6 +147,7 @@ if (isset($_GET['action'])) {
                 }
                 break;
             case 'delete':
+                $_POST = json_decode(file_get_contents("php://input"), true);
                 if ($_POST['id'] == $_SESSION['id_usuario']) {
                     $result['exception'] = 'No se puede eliminar a sí mismo';
                 } elseif (!$usuario->setId($_POST['id'])) {
@@ -170,6 +175,7 @@ if (isset($_GET['action'])) {
                 }
                 break;
             case 'logIn':
+                $_POST = json_decode(file_get_contents("php://input"), true);
                 $_POST = $model->validateForm($_POST);
                 if (!$model->checkUser($_POST['alias'])) {
                     $result['exception'] = 'Alias incorrecto';
@@ -183,6 +189,7 @@ if (isset($_GET['action'])) {
                 }
                 break;
             case 'register':
+                $_POST = json_decode(file_get_contents("php://input"), true);
                 $_POST = $model->validateForm($_POST);
                 if (!$model->setNombre($_POST['nombre'])) {
                     $result['exception'] = 'Nombre incorrecto';
@@ -209,10 +216,10 @@ if (isset($_GET['action'])) {
                 $result['exception'] = 'Acción no disponible sin sesión';
         }
     }
-     // Se indica el tipo de contenido a mostrar y su respectivo conjunto de caracteres.
-     header('content-type: application/json; charset=utf-8');
-     // Se imprime el resultado en formato JSON y se retorna al controlador.
-     print(json_encode($result));
+    // Se indica el tipo de contenido a mostrar y su respectivo conjunto de caracteres.
+    header('content-type: application/json; charset=utf-8');
+    // Se imprime el resultado en formato JSON y se retorna al controlador.
+    print(json_encode($result));
 } else {
     print(json_encode('Recurso no disponible'));
 }

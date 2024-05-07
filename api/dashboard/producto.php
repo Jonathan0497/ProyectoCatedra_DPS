@@ -24,6 +24,7 @@ if (isset($_GET['action'])) {
                 }
                 break;
             case 'create':
+                $_POST = json_decode(file_get_contents("php://input"), true);
                 $_POST = $model->validateForm($_POST);
                 if (!$model->setNombre($_POST['nombre'])) {
                     $result['exception'] = 'Nombre incorrecto';
@@ -60,6 +61,7 @@ if (isset($_GET['action'])) {
                 }
                 break;
             case 'update':
+                $_POST = json_decode(file_get_contents("php://input"), true);
                 $_POST = $model->validateForm($_POST);
                 if (!$model->setId($_POST['id'])) {
                     $result['exception'] = 'Producto incorrecto';
@@ -85,6 +87,7 @@ if (isset($_GET['action'])) {
                 }
                 break;
             case 'delete':
+                $_POST = json_decode(file_get_contents("php://input"), true);
                 if (!$model->setId($_POST['id'])) {
                     $result['exception'] = 'Usuario incorrecto';
                 } elseif (!$model->readOne()) {

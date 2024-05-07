@@ -1,7 +1,16 @@
 <?php
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: X-Requested-With, Content-Type, Accept, Origin, Authorization');
+
 require_once('../helpers/database.php');
 require_once('../helpers/validator.php');
 require_once('../models/categoria.php');
+
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    header("HTTP/1.1 200 OK");
+    exit();
+}
 
 // Se comprueba si existe una acción a realizar, de lo contrario se finaliza el script con un mensaje de error.
 if (isset($_GET['action'])) {
@@ -24,6 +33,7 @@ if (isset($_GET['action'])) {
                 }
                 break;
             case 'create':
+                $_POST = json_decode(file_get_contents("php://input"), true);
                 $_POST = $model->validateForm($_POST);
                 if (!$model->setCategoria($_POST['categoria'])) {
                     $result['exception'] = 'Categoría incorrecta';
@@ -46,11 +56,12 @@ if (isset($_GET['action'])) {
                 }
                 break;
             case 'update':
+                $_POST = json_decode(file_get_contents("php://input"), true);
                 $_POST = $model->validateForm($_POST);
                 if (!$model->setId($_POST['id'])) {
                     $result['exception'] = 'Categoría incorrecta';
                 } elseif (!$model->setCategoria($_POST['categoria'])) {
-                    $result['exception'] = 'Categoría incorrecta';
+                    $result['exception'] = 'Nombre de categoría incorrecta';
                 } elseif ($model->updateRow()) {
                     $result['status'] = 1;
                     $result['message'] = 'Categoría modificada correctamente';
@@ -59,6 +70,7 @@ if (isset($_GET['action'])) {
                 }
                 break;
             case 'delete':
+                $_POST = json_decode(file_get_contents("php://input"), true);
                 if ($model->setId($_POST['id'])) {
                     if ($model->deleteRow()) {
                         $result['status'] = 1;
