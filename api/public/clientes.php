@@ -1,7 +1,17 @@
 <?php
+header('Access-Control-Allow-Origin: http://localhost:8081');
+header('Access-Control-Allow-Credentials: true');
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: X-Requested-With, Content-Type, Accept, Origin, Authorization');
+
 require_once('../helpers/database.php');
 require_once('../helpers/validator.php');
 require_once('../models/clientes.php');
+
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    header("HTTP/1.1 200 OK");
+    exit();
+}
 
 if (isset($_GET['action'])) {
     session_start();
@@ -32,6 +42,7 @@ if (isset($_GET['action'])) {
     } else {
         switch ($_GET['action']) {
             case 'login':
+                $_POST = json_decode(file_get_contents("php://input"), true);
                 $_POST = $cliente->validateForm($_POST);
                 if (!$cliente->checkCorreo($_POST['correo'])) {
                     $result['exception'] = 'Correo incorrecto';
