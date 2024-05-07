@@ -1,21 +1,14 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { StyleSheet, Text } from 'react-native'; 
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
 import HomeScreen from './screens/HomeScreen';
-import CategoriaScreen from './screens/CategoriaScreen';
 import CuentaScreen from './screens/CuentaScreen';
+import ProductFormScreen from './screens/ProductFormScreen';
 
-const Tab = createBottomTabNavigator();
-
-const styles = StyleSheet.create({
-  nav: {
-    flex: 1,
-    style: { backgroundColor: '#3B3486' }, 
-  },
-});
+const Stack = createStackNavigator();
 
 const App = () => {
   return (
@@ -29,12 +22,12 @@ const App = () => {
             tabBarLabel: () => <Text>Home</Text>, 
           }}
         />
-        <Tab.Screen name="Categorias" component={CategoriaScreen} 
+        <Tab.Screen name="Productos" component={ProductFormScreen} 
           options={{
             tabBarIcon: ({ color, size }) => (
               <Icon name="shopping-bag" size={size} color={color} />
             ),
-            tabBarLabel: () => <Text>Categorias</Text>, 
+            tabBarLabel: () => <Text>Productos</Text>, 
           }}/>
         <Tab.Screen name="Cuenta" component={CuentaScreen} 
           options={{
@@ -47,5 +40,15 @@ const App = () => {
     </NavigationContainer>
   );
 };
+
+
+const Tab = createBottomTabNavigator();
+
+const styles = StyleSheet.create({
+  nav: {
+    flex: 1,
+    style: { backgroundColor: '#3B3486' }, 
+  },
+});
 
 export default App;
