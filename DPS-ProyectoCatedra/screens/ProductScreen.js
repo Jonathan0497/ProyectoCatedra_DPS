@@ -207,6 +207,7 @@ const ProductoList = () => {
                 }));
               }}
             >
+              <Picker.Item label="Seleccione uno" value="" />
               {categorias.map((categoria) => (
                 <Picker.Item key={categoria.id_categoria_producto} label={categoria.categoria_producto} value={categoria.id_categoria_producto} />
               ))}
@@ -219,6 +220,7 @@ const ProductoList = () => {
                 marca: itemValue
               }))}
             >
+              <Picker.Item label="Seleccione uno" value="" />
               {marcas.map((marca) => (
                 <Picker.Item key={marca.id_marca} label={marca.nombre_marca} value={marca.id_marca} />
               ))}
@@ -231,6 +233,7 @@ const ProductoList = () => {
                 estado: itemValue
               }))}
             >
+              <Picker.Item label="Seleccione uno" value="" />
               {estado.map((estado) => (
                 <Picker.Item key={estado.id_estado_producto} label={estado.estado_producto} value={estado.id_estado_producto} />
               ))}
@@ -250,7 +253,7 @@ const ProductoList = () => {
             <Text style={styles.cell}>{item.id_producto}</Text>
             <Text style={styles.cell}>{item.nombre_producto}</Text>
             <Text style={styles.cell}>{item.descripcion}</Text>
-            <Text style={styles.cell}>{item.precio_producto}</Text>
+            <Text style={styles.cell}>${item.precio_producto}</Text>
             <Text style={styles.cell}>{item.cantidad_disponible}</Text>
             <Text style={styles.cell}>{item.nombre_marca}</Text>
             <Text style={styles.cell}>{item.categoria_producto}</Text>

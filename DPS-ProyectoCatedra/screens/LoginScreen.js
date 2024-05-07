@@ -9,6 +9,10 @@ function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+
+  const navigateToRegister = () => {
+    navigation.navigate('Register');
+  };
   const handleLogin = () => {
     const url = 'http://localhost:80/ProyectoCatedra_DPS/api/dashboard/usuarios.php?action=logIn';
     const data = {
@@ -72,6 +76,9 @@ function LoginScreen({ navigation }) {
         />
         <Button mode="contained" onPress={handleLogin} style={styles.button}>
           Iniciar Sesión
+        </Button>
+        <Button mode='contained' onPress={navigateToRegister} style={styles.button}>
+            Registrarse
         </Button>
         <Button onPress={handleLogout} style={styles.button}>
           Cerrar Sesión
