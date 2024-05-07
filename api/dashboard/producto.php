@@ -32,7 +32,7 @@ if (isset($_GET['action'])) {
                 }
                 break;
                 case 'readAllEstado':
-                    if ($result['dataset'] = $model->readAll()) {
+                    if ($result['dataset'] = $model->readAllEstado()) {
                         $result['status'] = 1;
                     } elseif (Database::getException()) {
                         $result['exception'] = Database::getException();

@@ -15,21 +15,21 @@ const ProductoList = () => {
   const [estado, setEstado] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [producto, setProducto] = useState({
-    id_producto: '',
-    nombre_producto: '',
+    id: '',
+    nombre: '',
     descripcion: '',
-    precio_producto: '',
-    cantidad_disponible: '',
-    imagen_producto: '',
-    id_categoria_producto: '',
-    id_marca: '',
-    id_estado_producto: '',
+    precio: '',
+    cantidad: '',
+    categoria: '',
+    marca: '',
+    estado: ''
   });
 
   useEffect(() => {
     fetchProductos();
-    fetchMarcas(); 
+    fetchMarcas();
     fetchCategoria();
+    fetchEstado();
   }, []);
 
   const fetchProductos = () => {
@@ -74,24 +74,36 @@ const ProductoList = () => {
 
 
   const handleSaveProducto = () => {
-    const action = producto.id_producto ? 'update' : 'create';
-    axios.post(API_URL + action, producto)
+    const action = producto.id ? 'update' : 'create';
+    const payload = {
+      id: producto.id,
+      nombre: producto.nombre,
+      descripcion: producto.descripcion,
+      precio: producto.precio,
+      cantidad: producto.cantidad,
+      categoria: producto.categoria,
+      marca: producto.marca,
+      estado: producto.estado
+    };
+
+    // Imprimir en consola los datos que se van a enviar
+    console.log('Enviando datos al servidor:', payload);
+
+    axios.post(API_URL + action, payload)
       .then(response => {
         if (response.data.status === 1) {
-          alert('Producto ' + (producto.id_producto ? 'actualizado' : 'creado') + ' correctamente');
+          alert(`Producto ${producto.id ? 'actualizado' : 'creado'} correctamente`);
           setModalVisible(false);
           fetchProductos();
           setProducto({
-            id_producto: '',
-            nombre_producto: '',
+            id: '',
+            nombre: '',
             descripcion: '',
-            precio_producto: '',
-            cantidad_disponible: '',
-            imagen_producto: '',
-            id_categoria_producto: '',
-            id_marca: '',
-            id_estado_producto: '',
-            id_usuario: ''
+            precio: '',
+            cantidad: '',
+            categoria: '',
+            marca: '',
+            estado: ''
           });
         } else {
           alert(response.data.exception);
@@ -104,32 +116,50 @@ const ProductoList = () => {
   };
 
   const handleEditPress = (item) => {
-    setProducto(item);
+    console.log('Editando producto:', item);  // Puedes usar esto para verificar los datos recibidos.
+    setProducto({
+      id: item.id_producto,
+      nombre: item.nombre_producto,
+      descripcion: item.descripcion,
+      precio: item.precio_producto,
+      cantidad: item.cantidad_disponible,
+      categoria: item.id_categoria_producto,
+      marca: item.id_marca,
+      estado: item.id_estado_producto
+    });
     setModalVisible(true);
   };
-
+  
   const eliminarProducto = (id) => {
-    axios.post(API_URL + 'delete', {
-      id: id
-    })
+    axios.post(API_URL + 'delete', { id: id })
       .then(response => {
         if (response.data.status === 1) {
           alert('Producto eliminado correctamente');
-          fetchMarcas();
+          fetchProductos(); // Actualizamos la lista de productos después de eliminar uno.
         } else {
           alert(response.data.exception || 'Error al eliminar el Producto');
         }
       })
       .catch(error => {
-        console.error('Error al eliminar la marca:', error);
-        alert('Error técnico al eliminar la marca');
+        console.error('Error al eliminar el producto:', error);
+        alert('Error técnico al eliminar el producto');
       });
   };
+
 
   return (
     <View style={styles.container}>
       <Button title="Agregar Producto" onPress={() => {
-        setProducto({ id_producto: '', nombre: '', descripcion: '', precio: '', cantidad: '', categoria: '', marca: '', estado: '' });
+        setProducto({
+          id: '',
+          nombre: '',
+          descripcion: '',
+          precio: '',
+          cantidad: '',
+          categoria: '',
+          marca: '',
+          estado: ''
+        });
         setModalVisible(true);
       }} />
       <Modal
@@ -142,8 +172,10 @@ const ProductoList = () => {
           <View style={styles.modalView}>
             <TextInput
               style={styles.input}
-              onChangeText={(text) => setProducto({ ...producto, nombre_producto: text })}
-              value={producto.nombre_producto}
+              onChangeText={(text) => setProducto(prevState => ({
+                ...prevState, nombre: text
+              }))}
+              value={producto.nombre}
               placeholder="Nombre del producto"
             />
             <TextInput
@@ -154,44 +186,53 @@ const ProductoList = () => {
             />
             <TextInput
               style={styles.input}
-              onChangeText={(text) => setProducto({ ...producto, precio_producto: text })}
-              value={producto.precio_producto}
+              onChangeText={(text) => setProducto({ ...producto, precio: text })}
+              value={producto.precio}
               placeholder="Precio"
             />
             <TextInput
               style={styles.input}
-              onChangeText={(text) => setProducto({ ...producto, cantidad_disponible: text })}
-              value={producto.cantidad_disponible}
+              onChangeText={(text) => setProducto({ ...producto, cantidad: text })}
+              value={producto.cantidad}
               placeholder="Cantidad disponible"
             />
             <Picker
-              selectedValue={producto.id_categoria_producto}
+              selectedValue={producto.categoria}
               style={styles.input}
-              onValueChange={(itemValue, itemIndex) =>
-                setProducto({ ...producto, id_categoria_producto: itemValue })
-              }>
+              onValueChange={(itemValue) => {
+                console.log('Categoría seleccionada:', itemValue);
+                setProducto(prevState => ({
+                  ...prevState,
+                  categoria: itemValue
+                }));
+              }}
+            >
               {categorias.map((categoria) => (
                 <Picker.Item key={categoria.id_categoria_producto} label={categoria.categoria_producto} value={categoria.id_categoria_producto} />
               ))}
             </Picker>
             <Picker
-              selectedValue={producto.id_marca}
+              selectedValue={producto.marca}
               style={styles.input}
-              onValueChange={(itemValue, itemIndex) =>
-                setProducto({ ...producto, id_marca: itemValue })
-              }>
+              onValueChange={(itemValue) => setProducto(prevState => ({
+                ...prevState,
+                marca: itemValue
+              }))}
+            >
               {marcas.map((marca) => (
                 <Picker.Item key={marca.id_marca} label={marca.nombre_marca} value={marca.id_marca} />
               ))}
             </Picker>
             <Picker
-              selectedValue={producto.id_estado_producto}
+              selectedValue={producto.estado}
               style={styles.input}
-              onValueChange={(itemValue, itemIndex) =>
-                setProducto({ ...producto, id_estado_producto: itemValue })
-              }>
+              onValueChange={(itemValue) => setProducto(prevState => ({
+                ...prevState,
+                estado: itemValue
+              }))}
+            >
               {estado.map((estado) => (
-                <Picker.Item key={estado.id_marca} label={estado.nombre_marca} value={estado.id_marca} />
+                <Picker.Item key={estado.id_estado_producto} label={estado.estado_producto} value={estado.id_estado_producto} />
               ))}
             </Picker>
             <View style={styles.buttonGroup}>
@@ -218,7 +259,10 @@ const ProductoList = () => {
               <TouchableOpacity style={styles.button} onPress={() => handleEditPress(item)}>
                 <Icon name="pencil" size={20} color="white" />
               </TouchableOpacity>
-              {}
+              <TouchableOpacity style={styles.button} onPress={() => eliminarProducto(item.id_producto)}>
+                <Icon name="delete" size={20} color="white" />
+              </TouchableOpacity>
+              { }
             </View>
           </View>
         )}

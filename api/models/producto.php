@@ -158,7 +158,7 @@ class Producto extends Validator
 
     public function createRow()
     {
-        $sql = 'INSERT INTO producto(nombre_producto, descripcion_producto, precio_producto, cantidad_disponible, id_categoria_producto, id_marca, id_estado_producto, id_usuario) 
+        $sql = 'INSERT INTO producto(nombre_producto, descripcion, precio_producto, cantidad_disponible, id_categoria_producto, id_marca, id_estado_producto, id_usuario) 
                 VALUES(?, ?, ?, ?, ?, ?, ?, ?)';
         $params = array($this->nombre_producto, $this->descripcion, $this->precio_producto, $this->cantidad_disponible, $this->id_categoria_producto, $this->id_marca, $this->id_estado_producto, $this->id_usuario);
         return Database::executeRow($sql, $params);
@@ -171,17 +171,27 @@ class Producto extends Validator
                         producto.descripcion, 
                         producto.precio_producto, 
                         producto.cantidad_disponible, 
+                        marca.id_marca,
                         marca.nombre_marca, 
+                        categoria_producto.id_categoria_producto,
                         categoria_producto.categoria_producto, 
                         estado_producto.estado_producto, 
+                        estado_producto.id_estado_producto,
                         usuario.nombre_usuario AS nombre_usuario_producto FROM producto INNER JOIN marca ON producto.id_marca = marca.id_marca INNER JOIN categoria_producto ON producto.id_categoria_producto = categoria_producto.id_categoria_producto INNER JOIN estado_producto ON producto.id_estado_producto = estado_producto.id_estado_producto INNER JOIN usuario ON producto.id_usuario = usuario.id_usuario;';
+        $params = null;
+        return Database::getRows($sql, $params);
+    }
+
+    public function readAllEstado()
+    {
+        $sql = 'SELECT id_estado_producto, estado_producto FROM estado_producto';
         $params = null;
         return Database::getRows($sql, $params);
     }
 
     public function readOne()
     {
-        $sql = 'SELECT id_producto, nombre_producto, descripcion_producto, precio_producto, cantidad_disponible, id_categoria_producto, id_marca, id_estado_producto, id_usuario 
+        $sql = 'SELECT id_producto, nombre_producto, descripcion, precio_producto, cantidad_disponible, id_categoria_producto, id_marca, id_estado_producto, id_usuario 
                 FROM producto 
                 WHERE id_producto = ?';
         $params = array($this->id_producto);
@@ -190,7 +200,7 @@ class Producto extends Validator
 
     public function readProductoMarca()
     {
-        $sql = 'SELECT id_producto, nombre_producto, descripcion_producto, precio_producto, cantidad_disponible, id_categoria_producto, id_marca, id_estado_producto, id_usuario 
+        $sql = 'SELECT id_producto, nombre_producto, descripcion, precio_producto, cantidad_disponible, id_categoria_producto, id_marca, id_estado_producto, id_usuario 
         FROM producto WHERE id_marca = ?';
         $params = array($this->id_marca);
         return Database::getRow($sql, $params);
@@ -198,7 +208,7 @@ class Producto extends Validator
 
     public function readProductoCategoria()
     {
-        $sql = 'SELECT id_producto, nombre_producto, descripcion_producto, precio_producto, cantidad_disponible, id_categoria_producto, id_marca, id_estado_producto, id_usuario 
+        $sql = 'SELECT id_producto, nombre_producto, descripcion, precio_producto, cantidad_disponible, id_categoria_producto, id_marca, id_estado_producto, id_usuario 
         FROM producto WHERE id_categoria_producto = ?';
         $params = array($this->id_categoria_producto);
         return Database::getRow($sql, $params);
@@ -207,9 +217,9 @@ class Producto extends Validator
     public function updateRow()
     {
         $sql = 'UPDATE producto 
-                SET nombre_producto = ?, descripcion_producto = ?, precio_producto = ?, cantidad_disponible = ?, id_categoria_producto = ?, id_marca = ?, id_estado_producto = ?, id_usuario = ? 
+                SET nombre_producto = ?, descripcion = ?, precio_producto = ?, cantidad_disponible = ?, id_categoria_producto = ?, id_marca = ?, id_estado_producto = ?
                 WHERE id_producto = ?';
-        $params = array($this->nombre_producto, $this->descripcion, $this->precio_producto, $this->cantidad_disponible, $this->id_categoria_producto, $this->id_marca, $this->id_estado_producto, $this->id_usuario, $this->id_producto);
+        $params = array($this->nombre_producto, $this->descripcion, $this->precio_producto, $this->cantidad_disponible, $this->id_categoria_producto, $this->id_marca, $this->id_estado_producto, $this->id_producto);
         return Database::executeRow($sql, $params);
     }
 
@@ -221,4 +231,3 @@ class Producto extends Validator
         return Database::executeRow($sql, $params);
     }
 }
-?>

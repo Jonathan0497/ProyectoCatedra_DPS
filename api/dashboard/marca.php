@@ -36,7 +36,6 @@ if (isset($_GET['action'])) {
             }
             break;
         case 'create':
-            // Asumiendo que los datos se envían como JSON desde React Native
             $_POST = json_decode(file_get_contents("php://input"), true);
             $_POST = $model->validateForm($_POST);
             if (!$model->setNombre($_POST['nombre'])) {
