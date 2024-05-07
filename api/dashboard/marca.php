@@ -1,5 +1,6 @@
 <?php
-header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Origin: http://localhost:8081');
+header('Access-Control-Allow-Credentials: true');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: X-Requested-With, Content-Type, Accept, Origin, Authorization');
 
@@ -22,6 +23,7 @@ if (isset($_GET['action'])) {
     // Se declara e inicializa un arreglo para guardar el resultado que retorna la API.
     $result = array('status' => 0, 'message' => null, 'exception' => null);
      
+    if (isset($_SESSION['id_usuario'])) {
     // Se definen los casos posibles para las acciones de la API.
     switch ($_GET['action']) {
         case 'readAll':
@@ -93,6 +95,9 @@ if (isset($_GET['action'])) {
     header('content-type: application/json; charset=utf-8');
     // Se imprime el resultado en formato JSON y se retorna al controlador.
     print(json_encode($result));
+    } else {
+        print(json_encode('Acceso denegado'));
+    }
 } else {
     print(json_encode('Recurso no disponible'));
 }

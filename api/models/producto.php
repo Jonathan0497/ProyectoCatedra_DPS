@@ -166,8 +166,15 @@ class Producto extends Validator
 
     public function readAll()
     {
-        $sql = 'SELECT id_producto, nombre_producto, descripcion_producto, precio_producto, cantidad_disponible, id_categoria_producto, id_marca, id_estado_producto, id_usuario 
-                FROM producto';
+        $sql = 'SELECT  producto.id_producto, 
+                        producto.nombre_producto,  
+                        producto.descripcion, 
+                        producto.precio_producto, 
+                        producto.cantidad_disponible, 
+                        marca.nombre_marca, 
+                        categoria_producto.categoria_producto, 
+                        estado_producto.estado_producto, 
+                        usuario.nombre_usuario AS nombre_usuario_producto FROM producto INNER JOIN marca ON producto.id_marca = marca.id_marca INNER JOIN categoria_producto ON producto.id_categoria_producto = categoria_producto.id_categoria_producto INNER JOIN estado_producto ON producto.id_estado_producto = estado_producto.id_estado_producto INNER JOIN usuario ON producto.id_usuario = usuario.id_usuario;';
         $params = null;
         return Database::getRows($sql, $params);
     }
