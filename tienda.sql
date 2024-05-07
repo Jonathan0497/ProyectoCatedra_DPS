@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 05-05-2024 a las 06:16:59
+-- Tiempo de generación: 07-05-2024 a las 13:31:05
 -- Versión del servidor: 8.2.0
 -- Versión de PHP: 8.2.13
 
@@ -48,7 +48,18 @@ CREATE TABLE IF NOT EXISTS `categoria_producto` (
   `id_categoria_producto` int NOT NULL AUTO_INCREMENT,
   `categoria_producto` varchar(150) NOT NULL,
   PRIMARY KEY (`id_categoria_producto`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Volcado de datos para la tabla `categoria_producto`
+--
+
+INSERT INTO `categoria_producto` (`id_categoria_producto`, `categoria_producto`) VALUES
+(1, 'Electronicos'),
+(2, 'Hogar'),
+(3, 'Libros'),
+(4, 'Juguetes\r\n'),
+(5, 'prueba');
 
 -- --------------------------------------------------------
 
@@ -149,7 +160,15 @@ CREATE TABLE IF NOT EXISTS `estado_producto` (
   `id_estado_producto` int NOT NULL AUTO_INCREMENT,
   `estado_producto` varchar(150) NOT NULL,
   PRIMARY KEY (`id_estado_producto`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Volcado de datos para la tabla `estado_producto`
+--
+
+INSERT INTO `estado_producto` (`id_estado_producto`, `estado_producto`) VALUES
+(1, 'hay disponible'),
+(2, 'no hay disponible');
 
 -- --------------------------------------------------------
 
@@ -242,7 +261,6 @@ CREATE TABLE IF NOT EXISTS `producto` (
   `descripcion` varchar(255) NOT NULL,
   `precio_producto` decimal(5,2) NOT NULL,
   `cantidad_disponible` int NOT NULL,
-  `imagen_producto` blob NOT NULL,
   `id_categoria_producto` int NOT NULL,
   `id_marca` int NOT NULL,
   `id_estado_producto` int NOT NULL,
@@ -276,7 +294,7 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   UNIQUE KEY `correo_usuario` (`correo_usuario`),
   UNIQUE KEY `telefono` (`telefono`),
   KEY `id_estado_usuario` (`id_estado_usuario`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Volcado de datos para la tabla `usuario`
@@ -284,7 +302,8 @@ CREATE TABLE IF NOT EXISTS `usuario` (
 
 INSERT INTO `usuario` (`id_usuario`, `nombre_usuario`, `apellido_usuario`, `alias_usuario`, `clave_usuario`, `dui`, `correo_usuario`, `telefono`, `id_estado_usuario`) VALUES
 (1, 'Jonathan', 'Mendoza', 'JonaMendo', '$2y$10$V2dfsywLi/5Fw9T.UJRrWuF5TEu80zCO4GrRZ31z71RoTaRIjDnu.', '06305938-5', 'jm@gmail.com', '7202-2904', 1),
-(2, 'Carlos', 'Villalobos', 'Carlos', '$2y$10$ABrOPoqOQNNgn8w3w50izeNn5jodsXD1CRI1iXtRSFS.jtINIAn86', '06305938-6', 'cv@gmail.com', '7777-7777', 1);
+(2, 'Carlos', 'Villalobos', 'Carlos', '$2y$10$ABrOPoqOQNNgn8w3w50izeNn5jodsXD1CRI1iXtRSFS.jtINIAn86', '06305938-6', 'cv@gmail.com', '7777-7777', 1),
+(3, 'Carlos', 'Villalobos', 'Carlitos', '123456', '06305938-8', 'car@gmail.com', '7202-2902', 1);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
